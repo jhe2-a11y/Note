@@ -52,6 +52,14 @@ export async function POST(
       );
     }
 
+    // Check API key is configured
+    if (!process.env.ANTHROPIC_API_KEY) {
+      return NextResponse.json(
+        { success: false as const, error: "Server misconfiguration: ANTHROPIC_API_KEY is not set." },
+        { status: 500 }
+      );
+    }
+
     // Run pipeline
     const result = await runPipeline(rawText, style as OutputStyle);
 
